@@ -75,6 +75,13 @@ npm run test:smoke
 
 - [JEV Case 项目介绍](https://x.com/compose/articles/edit/2101213805644832768)
 
+## Author
+
+向明
+
+- X：[@woniu20758393](https://x.com/woniu20758393)
+- GitHub：[@Hiwoniu](https://github.com/Hiwoniu)
+
 ## License
 
 代码使用 [MIT License](LICENSE)。
