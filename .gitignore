@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+.qmuse/
+.local/
+.env
+playwright-report/
+test-results/
+public/media/

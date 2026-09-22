@@ -1,0 +1,19 @@
+---
+import CaseWall from "../components/react/CaseWall";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCases } from "../lib/cases";
+
+const cases = getCases();
+const scoreReferenceTime = new Date().toISOString();
+---
+
+<BaseLayout
+  title="JEV Signal | X 社区案例信号墙"
+  description="浏览 X 上基于 JEV / TypeSafe 的公开视频案例、原帖、引用与外链。"
+>
+  <CaseWall
+    cases={cases}
+    scoreReferenceTime={scoreReferenceTime}
+    client:load
+  />
+</BaseLayout>

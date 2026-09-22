@@ -1,0 +1,32 @@
+{
+  "name": "jev-signal-show",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "dev:qmuse": "vite",
+    "build": "astro build",
+    "build:qmuse": "vite build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test:smoke": "playwright test"
+  },
+  "dependencies": {
+    "@astrojs/react": "^6.0.6",
+    "@fontsource/ibm-plex-mono": "^5.2.7",
+    "@fontsource/space-grotesk": "^5.2.8",
+    "astro": "^7.3.3",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@playwright/test": "^1.55.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.0.2",
+    "vite": "^8.0.13",
+    "typescript": "^5.9.3"
+  }
+}

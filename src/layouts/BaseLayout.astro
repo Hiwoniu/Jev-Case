@@ -1,0 +1,92 @@
+---
+import "@fontsource/space-grotesk/400.css";
+import "@fontsource/space-grotesk/600.css";
+import "@fontsource/space-grotesk/700.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/600.css";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonicalPath?: string;
+  article?: boolean;
+}
+
+const {
+  title,
+  description,
+  image,
+  canonicalPath = Astro.url.pathname,
+  article = false,
+} = Astro.props;
+const siteURL = import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || "http://localhost:4321";
+const canonicalURL = new URL(canonicalPath, siteURL).toString();
+const imageURL = image ? new URL(image, siteURL).toString() : undefined;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a0c0b" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:type" content={article ? "article" : "website"} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    {imageURL && <meta property="og:image" content={imageURL} />}
+    <meta
+      name="twitter:card"
+      content={imageURL ? "summary_large_image" : "summary"}
+    />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {imageURL && <meta name="twitter:image" content={imageURL} />}
+    <title>{title}</title>
+    <slot name="head" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/" aria-label="JEV Signal 首页">
+          <span class="brand-mark">JEV</span>
+          <span class="brand-name">SIGNAL</span>
+        </a>
+        <div class="header-meta">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span>社区案例信号墙</span>
+        </div>
+        <nav class="header-nav" aria-label="主导航">
+          <label class="translation-switch">
+            <input type="checkbox" aria-label="中文翻译" />
+            <span class="translation-option translation-original">原文</span>
+            <span class="translation-option translation-chinese">中文</span>
+          </label>
+          <a href="/">案例</a>
+          <a
+            href="https://x.com/search?q=Jev&src=typed_query&f=top"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            查看 X
+          </a>
+        </nav>
+      </header>
+      <main>
+        <slot />
+      </main>
+      <footer class="site-footer">
+        <p>
+          非官方社区整理，与 JEV / TypeSafe 无隶属关系。原帖、视频及商标权利归原作者所有。
+        </p>
+        <p class="footer-tech">STATIC SIGNAL / DATA ONLY / ORIGINALS LINKED</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,75 @@
+---
+import CaseDetail from "../../components/react/CaseDetail";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCaseAliases, getCases, posterUrl } from "../../lib/cases";
+import type { CaseItem } from "../../lib/types";
+
+export function getStaticPaths() {
+  return [
+    ...getCases().map((item) => ({
+      params: { id: item.id },
+      props: { item, redirectTo: undefined },
+    })),
+    ...getCaseAliases().map((alias) => ({
+      params: { id: alias.id },
+      props: { item: undefined, redirectTo: alias.canonicalCaseId },
+    })),
+  ];
+}
+
+type Props =
+  | { item: CaseItem; redirectTo?: undefined }
+  | { item?: undefined; redirectTo: string };
+
+const { item, redirectTo } = Astro.props;
+if (redirectTo) {
+  return Astro.redirect(`/case/${redirectTo}`, 301);
+}
+if (!item) {
+  throw new Error("Case page has neither an item nor a redirect target");
+}
+const primary = item.media[0];
+const poster = posterUrl(primary);
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SocialMediaPosting",
+  headline: `${item.author.name} 的 JEV 案例`,
+  datePublished: item.createdAt,
+  articleBody: item.text,
+  url: item.canonicalUrl,
+  image: poster,
+  author: {
+    "@type": "Person",
+    name: item.author.name,
+    alternateName: `@${item.author.screenName}`,
+  },
+  interactionStatistic: [
+    {
+      "@type": "InteractionCounter",
+      interactionType: "https://schema.org/ViewAction",
+      userInteractionCount: item.metrics.views,
+    },
+    {
+      "@type": "InteractionCounter",
+      interactionType: "https://schema.org/LikeAction",
+      userInteractionCount: item.metrics.likes,
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title={`${item.author.name} · JEV 案例`}
+  description={item.text.slice(0, 180)}
+  image={poster}
+  canonicalPath={`/case/${item.id}`}
+  article
+>
+  <script
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify(structuredData)}
+  />
+
+  <CaseDetail item={item} client:load />
+</BaseLayout>
